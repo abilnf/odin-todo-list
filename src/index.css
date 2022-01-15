@@ -24,42 +24,12 @@ body {
   overflow-y: auto;
   margin: 0;
   list-style: none;
+  padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 8px;
 }
 
-#sidebar input[type=radio] {
-  opacity: 0;
-}
-
-#sidebar label {
-  display: inline-block;
-  width: 100%;
-  background-color: #831c83;
-  box-shadow: 0 0 8px black;
-  border: 0;
-  border-radius: 4px;
-  padding: 8px 0;
-  font-size: large;
-  transition: background-color 0.1s ease;
-  cursor: pointer;
-}
-
-#sidebar label:hover {
-  background-color: #a326a3;
-}
-
-#sidebar li:first-child label {
-  background-color: #5e3496;
-}
-
-#sidebar li:first-child label:hover {
-  background-color: #7440b8;
-}
-
-/* 
 #sidebar button {
   width: 100%;
   background-color: #831c83;
@@ -82,7 +52,7 @@ body {
 
 #sidebar li:first-child button:hover {
   background-color: #7440b8;
-} */
+}
 
 
 #todos {

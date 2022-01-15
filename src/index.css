@@ -1,3 +1,145 @@
+html {
+  color-scheme: dark;
+  font-family: Roboto, sans-serif;
+}
+
 body {
+  margin: 0;
   background-color: purple;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+#columns {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+#sidebar {
+  /* background-color: #20142c; */
+  background-color: #2d0c41;
+  width: 400px;
+  overflow-y: auto;
+  margin: 0;
+  list-style: none;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#sidebar button {
+  width: 100%;
+  background-color: #831c83;
+  box-shadow: 0 0 8px black;
+  border: 0;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: large;
+  transition: background-color 0.1s ease;
+  cursor: pointer;
+}
+
+#sidebar button:hover {
+  background-color: #a326a3;
+}
+
+#sidebar li:first-child button {
+  background-color: #5e3496;
+}
+
+#sidebar li:first-child button:hover {
+  background-color: #7440b8;
+}
+
+#todos {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  background-color: #130a24;
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.todo-card {
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #320488;
+  box-shadow: 0 0 20px black;
+  transition: background-color .3s ease;
+}
+
+.todo-card:hover {
+  background-color: #4000b8;
+}
+
+.title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: white;
+  flex: 0 0 auto;
+  margin-top: 16px;
+  transition: width .3s ease;
+  align-self: center;
+}
+
+.expandable-area--hidden > .divider {
+  width: 0%;
+}
+
+.expandable-area {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all .1s ease;
+}
+
+.expandable-area--hidden {
+  max-height: 0;
+}
+
+h2 {
+  margin: 0;
+}
+
+.checkbox {
+  position: relative;
+  width: 34px;
+  height: 34px;
+}
+
+input[type=checkbox] {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid #178dfc;
+  appearance: none;
+  margin: 0;
+}
+
+.checkmark {
+  height: 24px;
+  width: 24px;
+  margin: 5px 0px 0 4px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 46.15775680541992 100;
+  stroke-dashoffset: 47;
+  pointer-events: none;
+  transition: stroke-dashoffset .3s ease;
+}
+
+input[type=checkbox]:checked+.checkmark{ 
+  stroke-dashoffset: 0;
 }

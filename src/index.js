@@ -1,5 +1,9 @@
 import './index.css'
 
+function TodoDate(day, month, year) {
+  return { day, month, year, getDate: () => `${day.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })}.${month.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })}.${year.toLocaleString('en-US', { minimumIntegerDigits: 4, useGrouping: false })}` }
+}
+
 const uiManager = (function () {
   document.querySelector('.project-selected').addEventListener('click', e => {
     todoManager.selectProject(null)
@@ -7,6 +11,7 @@ const uiManager = (function () {
   })
 
   const closeDialogs = () => {
+    document.querySelectorAll('.dialog-container input, .dialog-container textarea').forEach(field => field.value = '')
     document.querySelectorAll('.dialog-container').forEach(dialog => dialog.classList.add('dialog--hidden'))
   }
 
@@ -59,8 +64,17 @@ const uiManager = (function () {
     document.querySelectorAll('#todos > *:not(template)').forEach(element => {
       todos.removeChild(element)
     })
+    let date = null
     const template = document.querySelector('#todo-card-template')
+    const dateTemplate = document.querySelector('#todo-date-template')
     for (let todo of todoManager.getTodos()) {
+      if (JSON.stringify(date) !== JSON.stringify(todo.date)) {
+        date = todo.date
+        const clone = dateTemplate.content.firstElementChild.cloneNode(true);
+        clone.textContent = date.getDate()
+        todos.appendChild(clone)
+      }
+
       const clone = template.content.firstElementChild.cloneNode(true);
       clone.addEventListener('click', e => {
         const area = clone.querySelector('.expandable-area')
@@ -71,8 +85,13 @@ const uiManager = (function () {
         }
         area.classList.toggle('expandable-area--hidden')
       })
-      clone.querySelector('input[type=checkbox]').addEventListener('click', e => {
+      clone.querySelector('.todo-done-checkox').addEventListener('click', e => {
         e.stopPropagation()
+      })
+      clone.querySelector('.todo-done-checkox').addEventListener('change', e => {
+        clone.classList.toggle('todo-card--done')
+        todo.done = e.target.checked
+        storageManager.saveProjects()
       })
       clone.querySelector('.todo-name').textContent = todo.name
       clone.querySelector('.todo-description').textContent = todo.description
@@ -83,20 +102,44 @@ const uiManager = (function () {
   return { showNewProjectDialog, showNewTodoDialog, closeDialogs, updateProjects, updateTodos }
 })()
 
-const todoManager = (function () {
-  const projects = {}
+
+const storageManager = (function () {
+  const saveProjects = () => {
+    const projects = JSON.stringify(todoManager.getRawProjects())
+    localStorage.projects = projects
+  }
+
+  const loadProjects = () => {
+    const string = localStorage.projects
+    if (string) {
+      const projects = JSON.parse(string)
+      for (let project of Object.values(projects)) {
+        const newTodos = []
+        for (let todo of project.todos) {
+          todo.date = TodoDate(todo.date.day, todo.date.month, todo.date.year)
+          if (!todo.done) newTodos.push(todo)
+        }
+        project.todos = newTodos
+      }
+      return projects
+    } else {
+      return {}
+    }
+  }
+
+  return { saveProjects, loadProjects }
+})()
+
+const todoManager = (function (loadedProjects) {
+  const projects = loadedProjects
   let currentProject = null
 
   function Project(name) {
     return { name, todos: [] }
   }
 
-  function Date(day, month, year) {
-    return { day, month, year }
-  }
-
   function Todo(name, description, date) {
-    return { name, description, date }
+    return { name, description, date, done: false }
   }
 
   const addProject = (name) => {
@@ -118,20 +161,22 @@ const todoManager = (function () {
   }
 
   const addTodo = (project, name, description, day, month, year) => {
-    projects[project].todos.push(Todo(name, description, Date(day, month, year)))
+    projects[project].todos.push(Todo(name, description, TodoDate(day, month, year)))
   }
 
   const getTodos = () => {
     let todos = (currentProject ? projects[currentProject].todos : Object.values(projects).map(project => project.todos).flat(1)).slice()
-    console.log(todos)
     todos.sort((a, b) =>
       (a.date.year * 10000 + a.date.month * 100 + a.date.day) - (b.date.year * 10000 + b.date.month * 100 + b.date.day))
-    console.log(todos)
     return todos
   }
 
-  return { addProject, getProjectNames, selectProject, getCurrentProject, addTodo, getTodos }
-})()
+  const getRawProjects = () => {
+    return projects
+  }
+
+  return { addProject, getProjectNames, selectProject, getCurrentProject, addTodo, getTodos, getRawProjects }
+})(storageManager.loadProjects())
 
 document.querySelectorAll('.close-dialog').forEach(button => {
   button.addEventListener('click', uiManager.closeDialogs)
@@ -151,6 +196,7 @@ document.querySelector('#confirm-new-project').addEventListener('click', e => {
     if (todoManager.addProject(title)) {
       uiManager.closeDialogs()
       uiManager.updateProjects()
+      storageManager.saveProjects()
     }
   }
 })
@@ -167,15 +213,10 @@ document.querySelector('#confirm-new-todo').addEventListener('click', e => {
       todoManager.addTodo(project, name, description, day, month, year)
       uiManager.closeDialogs()
       uiManager.updateTodos()
+      storageManager.saveProjects()
     }
   }
 })
 
-todoManager.addProject('project1')
-todoManager.addProject('project2')
-todoManager.addProject('project3')
-todoManager.addTodo('project1', 'todo1', 'description1', 15, 3, 2005)
-todoManager.addTodo('project2', 'todo2', 'description2', 15, 3, 2004)
-todoManager.addTodo('project3', 'todo3', 'description3', 15, 3, 2006)
 uiManager.updateProjects()
 uiManager.updateTodos()

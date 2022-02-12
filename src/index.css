@@ -57,7 +57,7 @@ body {
 }
 
 .project:hover .project-name,
-.project input[type=radio]:checked+.project-name {
+.project input[type="radio"]:checked + .project-name {
   background-color: #bd2fbd;
 }
 
@@ -66,7 +66,7 @@ body {
 }
 
 #sidebar .project:first-child:hover .project-name,
-#sidebar .project:first-child input[type=radio]:checked+.project-name {
+#sidebar .project:first-child input[type="radio"]:checked + .project-name {
   background-color: #7440b8;
 }
 
@@ -79,7 +79,7 @@ body {
   border: 2px solid white;
   background-color: transparent;
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(0, 0, 0, .6);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
 }
 
 #content {
@@ -102,14 +102,13 @@ body {
 
 @keyframes complete-todo-shrink {
   to {
-    
   }
 }
 
 @keyframes complete-todo-gray {
   to {
     background-color: #403750;
-    opacity: .2;
+    opacity: 0.2;
   }
 }
 
@@ -118,7 +117,7 @@ body {
   border-radius: 16px;
   background-color: #320488;
   box-shadow: 0 0 20px black;
-  transition: background-color .3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .todo-card:hover {
@@ -141,7 +140,7 @@ body {
   background-color: white;
   flex: 0 0 auto;
   /* margin-top: 16px; */
-  transition: width .3s ease;
+  transition: width 0.3s ease;
   align-self: center;
 }
 
@@ -155,7 +154,7 @@ body {
   overflow: hidden;
   margin-top: 16px;
   /* padding-top: 16px; */
-  transition: all .1s ease;
+  transition: all 0.1s ease;
 }
 
 .expandable-area--hidden {
@@ -173,7 +172,7 @@ h2 {
   height: 34px;
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
   position: absolute;
   width: 34px;
   height: 34px;
@@ -192,10 +191,10 @@ input[type=checkbox] {
   stroke-dasharray: 46.15775680541992 100;
   stroke-dashoffset: 47;
   pointer-events: none;
-  transition: stroke-dashoffset .3s ease;
+  transition: stroke-dashoffset 0.3s ease;
 }
 
-input[type=checkbox]:checked+.checkmark{ 
+input[type="checkbox"]:checked + .checkmark {
   stroke-dashoffset: 0;
 }
 
@@ -205,19 +204,58 @@ input[type=checkbox]:checked+.checkmark{
   align-self: flex-end;
 }
 
+#header-row {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 #add-todo {
   font-weight: bold;
   font-size: 24px;
-  align-self: center;
   padding: 8px 32px;
   /* margin-bottom: -16px; */
   border-radius: 8px;
   background-color: #4a2877;
   border: 0;
   box-shadow: 0 0 10px black;
-  transition: background-color .1s ease;
-  margin-top: 16px;
+  transition: background-color 0.1s ease;
   cursor: pointer;
+}
+
+.user-space--hidden {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+#user-space-login button {
+  font-weight: bold;
+  font-size: 24px;
+  padding: 8px 32px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+#user-space-logout img {
+  width: 44px;
+  height: 44px;
+  vertical-align: middle;
+  border-radius: 100%;
+}
+
+#user-space-logout button {
+  font-weight: bold;
+  font-size: 24px;
+  padding: 8px 32px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  vertical-align: middle;
 }
 
 #add-todo:hover {
@@ -234,7 +272,7 @@ input[type=checkbox]:checked+.checkmark{
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -273,7 +311,7 @@ textarea {
   width: 40rem;
 }
 
-input[type=text] {
+input[type="text"] {
   margin-top: 8px;
   background-color: transparent;
   border: 0;
@@ -285,7 +323,7 @@ input[type=text] {
   flex: 1 0 auto;
 }
 
-input[type=date] {
+input[type="date"] {
   border-radius: 8px;
   border: 0;
   padding: 8px;
@@ -308,7 +346,7 @@ input[type=date] {
 
 .close-dialog::before {
   position: absolute;
-  content: '⨯';
+  content: "⨯";
   text-align: center;
   font-size: 24px;
   left: 0;
@@ -331,13 +369,13 @@ input[type=date] {
   align-self: flex-end;
   background-color: #831c83;
   margin-top: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,.3);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   border: 0;
   border-radius: 8px;
   padding: 8px;
   text-align: center;
   font-size: large;
-  transition: background-color .1s ease;
+  transition: background-color 0.1s ease;
   cursor: pointer;
 }
 
